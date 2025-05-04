@@ -49,7 +49,8 @@ def run_mane_box():
         print("\n--- Welcome to The Mane Box ---")
 
         name = input("Enter your name: ")
-        hair_type = input("Hair type (curly, straight, wavy, color-treated): ").lower().strip()
+        hair_texture = input("Hair texture (straight, wavy, curly, coily): ").lower().strip()
+        hair_type = input("Hair type (fine, medium, thick): ").lower().strip()
         concerns = [c.strip() for c in input("Hair concerns (comma-separated): ").lower().split(',')]
         try:
             budget = float(input("Max budget for individual products: $").strip())
@@ -58,7 +59,7 @@ def run_mane_box():
             continue
         exclusions = [e.strip() for e in input("Any exclusions (e.g., sulfate-free, vegan)? (comma-separated): ").lower().split(',')]
 
-        user = User(name, hair_type, concerns, budget, exclusions)
+        user = User(name, hair_texture, hair_type, concerns, budget, exclusions)
         recommended = recommend_products(user, products)
 
         if not recommended:
