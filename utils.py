@@ -1,7 +1,7 @@
 import re
 
 # Expanded concern keywords mapping
-CONCERN_KEYWORDS = {
+concern_keywords = {
     "dryness": ["dry", "hydrating", "moisture", "moisturizing", "nourish", "nourishing", "quench", "parched"],
     "frizz": ["frizz", "smoothing", "smooth", "anti-frizz", "flyaways", "humidity", "tame", "control"],
     "dandruff": ["dandruff", "flaky", "flakes", "scalp", "itchy", "itch", "scalp care", "scalp health", "clarifying"],
@@ -22,7 +22,7 @@ def match_concerns(description, concerns):
 
     description = description.lower()
     for concern in concerns:
-        keywords = CONCERN_KEYWORDS.get(concern, [])
+        keywords = concern_keywords.get(concern, [])
         for keyword in keywords:
             if keyword in description:
                 return True
@@ -46,7 +46,7 @@ def identify_concerns(description):
         return found
 
     description = description.lower()
-    for concern, keywords in CONCERN_KEYWORDS.items():
+    for concern, keywords in concern_keywords.items():
         for keyword in keywords:
             if keyword in description:
                 found.append(concern)

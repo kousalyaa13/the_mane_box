@@ -100,7 +100,12 @@ def run_mane_box():
             print("❌ Please enter a valid number (ex: 20 or 15.99).")
 
     # Exclusions
-    exclusions = input("Any product exclusions (sulfates, parabens, fragrances — comma-separated): ").lower().split(',')
+    raw_exclusions = input("Any product exclusions (sulfates, parabens, fragrances — comma-separated): ").strip().lower()
+
+    if raw_exclusions in ["no", "n/a", "none", ""]:
+        exclusions = []
+    else:
+        exclusions = [e.strip() for e in raw_exclusions.split(',') if e.strip()]
 
     # Build user + recommend
     user = User(name, hair_texture, hair_type, concerns, budget, exclusions)
@@ -114,10 +119,13 @@ def run_mane_box():
     box = SubscriptionBox(user)
     shampoos = [p for p in recommended if "shampoo" in p.category.lower()]
     conditioners = [p for p in recommended if "conditioner" in p.category.lower()]
+    others = [p for p in recommended if any(keyword in p.category.lower() for keyword in ["mask", "treatment", "leave-in", "serum", "spray", "oil", "combo", "2-in-1"]) and "shampoo" not in p.category.lower() and "conditioner" not in p.category.lower()]
 
     for product in shampoos[:5]:
         box.add_product(product)
     for product in conditioners[:5]:
+        box.add_product(product)
+    for product in others[:5]:
         box.add_product(product)
 
     box.display_box()
