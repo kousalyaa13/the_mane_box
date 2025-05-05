@@ -8,6 +8,10 @@ df = pd.read_csv("data\dataset_sephora_treatments.csv", encoding="utf-8")
 def clean_html(raw_html):
     clean_text = re.sub(r'<[^>]+>', '', str(raw_html))  # remove HTML tags
     clean_text = re.sub(r'\s+', ' ', clean_text).strip()  # remove extra spaces
+    # Remove trailing " in ... oz Image ..." or similar
+    clean_text = re.sub(r"\s+in\s+.*?Image\s*\d*\s*$", "", clean_text, flags=re.IGNORECASE)
+    clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+
     return clean_text
 
 # Clean the description column

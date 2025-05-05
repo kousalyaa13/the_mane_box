@@ -109,7 +109,7 @@ def run_mane_box():
     else:
         avoid_concerns.append("volume")
 
-    if get_yes_no("Do you prefer clean or vegan products? (yes/no): "):
+    if get_yes_no("Do you prefer clean/vegan products? (yes/no): "):
         concerns.append("vegan")
     else:
         avoid_concerns.append("vegan")
