@@ -1,6 +1,6 @@
 import re
 
-# Expanded concern keywords mapping
+# Mapping of user concern categories to relevant keywords for text matching
 concern_keywords = {
     "dryness": ["dry", "hydrating", "moisture", "moisturizing", "nourish", "nourishing", "quench", "parched"],
     "frizz": ["frizz", "smoothing", "smooth", "anti-frizz", "flyaways", "humidity", "tame", "control"],
@@ -15,12 +15,22 @@ concern_keywords = {
     "heat damage": ["heat protection", "thermal", "blow dry", "heat damage", "hot tools", "iron", "protectant"]
 }
 
-# Match if a product description covers any of the user's concerns
 def match_concerns(description, concerns):
+    """
+    Check if the product description matches any of the user's hair concerns.
+
+    Args:
+        description (str): The text description of the product.
+        concerns (list of str): List of concern keywords from the user.
+
+    Returns:
+        bool: True if any concern keyword is found in the description, else False.
+    """
     if not description:
         return False
 
     description = description.lower()
+    # Check if any of the user's concerns are in the description
     for concern in concerns:
         keywords = concern_keywords.get(concern, [])
         for keyword in keywords:
@@ -28,27 +38,49 @@ def match_concerns(description, concerns):
                 return True
     return False
 
-# Match if a product description contains excluded terms
 def match_exclusions(description, exclusions):
+    """
+    Check if the product description includes any excluded ingredients or terms.
+
+    Args:
+        description (str): The text description of the product.
+        exclusions (list of str): List of ingredient or feature keywords to avoid.
+
+    Returns:
+        bool: True if any exclusion is found in the description, else False.
+    """
     if not description:
         return False
-
+    
     for exclude in exclusions:
+        # Use regex to match whole words only
+        # re.escape is used to escape any special characters in the exclusion term
         pattern = re.compile(re.escape(exclude), re.IGNORECASE)
         if pattern.search(description):
             return True
     return False
 
-# Identify all concerns a description targets (used for display)
 def identify_concerns(description):
+    """
+    Identify all hair concerns a product description targets for display purposes.
+
+    Args:
+        description (str): The text description of the product.
+
+    Returns:
+        list of str: Concerns identified based on keyword presence in the description.
+    """
     found = []
+    # Check if description is empty or None
     if not description:
         return found
 
     description = description.lower()
+    # Check for each concern category
     for concern, keywords in concern_keywords.items():
         for keyword in keywords:
+            # Use regex to match whole words only
             if keyword in description:
                 found.append(concern)
-                break
+                break 
     return found
