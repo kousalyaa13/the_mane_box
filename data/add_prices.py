@@ -64,4 +64,4 @@ df[["price", "price_tier"]] = df["brand"].apply(lambda b: pd.Series(estimate_pri
 
 # Save new CSV
 df.to_csv("cleaned_mane_box_data_with_price_tiers.csv", index=False)
-print("✅ New file saved: cleaned_mane_box_data_with_price_tiers.csv")
+print("New file saved: cleaned_mane_box_data_with_price_tiers.csv")

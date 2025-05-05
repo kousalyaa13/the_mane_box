@@ -19,13 +19,15 @@ def load_products(filepath="data/cleaned_mane_box_data_with_price_tiers.csv"):
             ))
     return products
 
-def recommend_products(user, all_products):
+def recommend_products(user, all_products, avoid_concerns):
     matches = []
     for product in all_products:
-        if match_concerns(product.description, user.concerns) and not match_exclusions(product.description, user.exclusions):
-            if product.price <= user.budget:
-                matches.append(product)
-    random.shuffle(matches)  # Randomize output
+        if match_concerns(product.description, user.concerns):
+            if not match_concerns(product.description, avoid_concerns):  # exclude unwanted concerns
+                if not match_exclusions(product.description, user.exclusions):
+                    if product.price <= user.budget:
+                        matches.append(product)
+    random.shuffle(matches)
     return matches
 
 def run_mane_box():
@@ -34,7 +36,7 @@ def run_mane_box():
         print("⚠️ Could not load product data.")
         return
 
-    print("\n--- Welcome to The Mane Box ---")
+    print("\n\n--- Welcome to The Mane Box ---")
 
     name = input("Enter your name: ").strip()
 
@@ -56,18 +58,34 @@ def run_mane_box():
     hair_type = get_valid_input("Hair type (fine, medium, thick): ", ["fine", "medium", "thick"])
 
     concerns = []
+    avoid_concerns = []
 
     # Granular questions
-    if get_yes_no("Is your hair color-treated? (yes/no): "):
+    if get_yes_no("Do you have color-treated hair? (yes/no): "):
         concerns.append("color-treated")
+    else:
+        avoid_concerns.append("color-treated")
     if get_yes_no("Do you have dandruff or scalp issues? (yes/no): "):
         concerns.append("dandruff")
+        concerns.append("buildup")
+    else:
+        avoid_concerns.append("dandruff")
+        avoid_concerns.append("buildup")
+
     if get_yes_no("Do you use heat styling tools regularly? (yes/no): "):
         concerns.append("heat damage")
+    else:
+        avoid_concerns.append("heat damage")
+
     if get_yes_no("Would you want more volume in your hair? (yes/no): "):
         concerns.append("volume")
+    else:
+        avoid_concerns.append("volume")
+
     if get_yes_no("Do you prefer clean or vegan products? (yes/no): "):
         concerns.append("vegan")
+    else:
+        avoid_concerns.append("vegan")
 
     # Ask for any additional concerns
     extra = input("Any other hair concerns you'd like to address? (dryness, frizz, oiliness — comma-separated): ")
@@ -86,7 +104,7 @@ def run_mane_box():
 
     # Build user + recommend
     user = User(name, hair_texture, hair_type, concerns, budget, exclusions)
-    recommended = recommend_products(user, products)
+    recommended = recommend_products(user, products, avoid_concerns)
 
     if not recommended:
         print("\n😔 Sorry, no matching products found within your preferences and budget.")

@@ -24,8 +24,8 @@ class SubscriptionBox:
                     print(f"- {p.brand} – {p.name}")
                     print(concern_text)
 
-        print_section("🧴 Shampoos", shampoos)
-        print_section("💧 Conditioners", conditioners)
-        print_section("✨ Other Products", others)
+        print_section("🧴 Shampoos", shampoos, "within your budget")
+        print_section("💧 Conditioners", conditioners, "within your budget")
+        print_section("✨ Other Products", others, "within your budget")
 
         print("\n🧼 Enjoy your personalized hair care box!")
