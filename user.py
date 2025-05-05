@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, name, hair_texture, hair_type, concerns, budget, exclusions):
+    def __init__(self, name, hair_texture, hair_type, concerns, exclusions):
         """
         Initialize a User object with the following attributes:
         """
@@ -7,11 +7,10 @@ class User:
         self.hair_texture = hair_texture
         self.hair_type = hair_type
         self.concerns = concerns
-        self.budget = budget
         self.exclusions = exclusions
         self.history = []
 
-    def update_preferences(self, hair_texture = None, hair_type = None, concerns = None, budget = None, exclusions = None):
+    def update_preferences(self, hair_texture = None, hair_type = None, concerns = None, exclusions = None):
         """
         Update the user's preferences.
         """
@@ -21,7 +20,5 @@ class User:
             self.hair_type = hair_type
         if concerns:
             self.concerns = concerns
-        if budget:
-            self.budget = budget
         if exclusions:
             self.exclusions = exclusions
