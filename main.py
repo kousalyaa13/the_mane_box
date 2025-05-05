@@ -57,7 +57,14 @@ def run_mane_box():
             print("\nSorry, no matching products found for your preferences.")
         else:
             box = SubscriptionBox(user)
-            for product in recommended[:3]:  # Limit to 3 products
+            
+            shampoos = [p for p in recommended if "shampoo" in p.category.lower()]
+            conditioners = [p for p in recommended if "conditioner" in p.category.lower()]
+
+            for product in shampoos[:5]:
+                box.add_product(product)
+
+            for product in conditioners[:5]:
                 box.add_product(product)
             box.display_box()
 

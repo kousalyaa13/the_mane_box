@@ -7,7 +7,26 @@ class SubscriptionBox:
         self.selected_products.append(product)
 
     def display_box(self):
-        print(f"\n{self.user.name}'s Mane Box:")
-        for product in self.selected_products:
-            print(f"- {product.name} ({product.category}) by {product.brand}")
-        print("\nEnjoy your personalized hair care products!")
+        print(f"\n🎁 {self.user.name}'s Custom Mane Box:")
+
+        shampoos = [p for p in self.selected_products if "shampoo" in p.category.lower()]
+        conditioners = [p for p in self.selected_products if "conditioner" in p.category.lower()]
+        others = [p for p in self.selected_products if p not in shampoos + conditioners]
+
+        if shampoos:
+            print("\n🧴 Shampoos:")
+            for product in shampoos:
+                print(f"- {product.name} ({product.brand})")
+
+        if conditioners:
+            print("\n💧 Conditioners:")
+            for product in conditioners:
+                print(f"- {product.name} ({product.brand})")
+
+        if others:
+            print("\n✨ Other Products:")
+            for product in others:
+                print(f"- {product.name} ({product.brand})")
+
+        print("\n🧼 Enjoy your hair care picks!")
+        print("💖 Thank you for using The Mane Box!")
