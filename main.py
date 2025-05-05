@@ -38,44 +38,53 @@ def run_mane_box():
 
     name = input("Enter your name: ").strip()
 
-    valid_textures = ["straight", "wavy", "curly", "coily"]
-    valid_types = ["fine", "medium", "thick"]
+    def get_valid_input(prompt, options):
+        while True:
+            value = input(prompt).strip().lower()
+            if value in options:
+                return value
+            print(f"❌ Invalid input. Choose from: {', '.join(options)}")
 
-    while True:
-        hair_texture = input("Hair texture (straight, wavy, curly, coily): ").lower().strip()
-        if hair_texture in valid_textures:
-            break
-        print("❌ Invalid texture. Choose from: straight, wavy, curly, coily.")
+    def get_yes_no(prompt):
+        while True:
+            value = input(prompt).strip().lower()
+            if value in ["yes", "no"]:
+                return value == "yes"
+            print("❌ Please enter 'yes' or 'no'.")
 
-    while True:
-        hair_type = input("Hair type (fine, medium, thick): ").lower().strip()
-        if hair_type in valid_types:
-            break
-        print("❌ Invalid type. Choose from: fine, medium, thick.")
+    hair_texture = get_valid_input("Hair texture (straight, wavy, curly, coily): ", ["straight", "wavy", "curly", "coily"])
+    hair_type = get_valid_input("Hair type (fine, medium, thick): ", ["fine", "medium", "thick"])
 
-    concerns = input("Hair concerns (e.g., dryness, frizz, split ends — comma-separated): ").lower().split(',')
+    concerns = []
 
-    # specific new  questions
-    if input("Is your hair color-treated? (yes/no): ").strip().lower() == "yes":
-        concerns.append("color-safe")
-    if input("Do you have dandruff or scalp issues? (yes/no): ").strip().lower() == "yes":
+    # Granular questions
+    if get_yes_no("Is your hair color-treated? (yes/no): "):
+        concerns.append("color-treated")
+    if get_yes_no("Do you have dandruff or scalp issues? (yes/no): "):
         concerns.append("dandruff")
-    if input("Do you use heat styling tools regularly? (yes/no): ").strip().lower() == "yes":
-        concerns.append("heat protection")
-    if input("Do you want more volume in your hair? (yes/no): ").strip().lower() == "yes":
+    if get_yes_no("Do you use heat styling tools regularly? (yes/no): "):
+        concerns.append("heat damage")
+    if get_yes_no("Would you want more volume in your hair? (yes/no): "):
         concerns.append("volume")
-    if input("Do you prefer clean or vegan products? (yes/no): ").strip().lower() == "yes":
+    if get_yes_no("Do you prefer clean or vegan products? (yes/no): "):
         concerns.append("vegan")
 
+    # Ask for any additional concerns
+    extra = input("Any other hair concerns you'd like to address? (dryness, frizz, oiliness — comma-separated): ")
+    concerns += [c.strip().lower() for c in extra.split(",") if c.strip()]
+
+    # Budget
     while True:
         try:
             budget = float(input("Max budget per product (in $): ").strip())
             break
         except ValueError:
-            print("❌ Please enter a valid number (e.g., 20 or 15.99).")
+            print("❌ Please enter a valid number (ex: 20 or 15.99).")
 
-    exclusions = input("Any product exclusions (e.g., sulfates, parabens — comma-separated): ").lower().split(',')
+    # Exclusions
+    exclusions = input("Any product exclusions (sulfates, parabens, fragrances — comma-separated): ").lower().split(',')
 
+    # Build user + recommend
     user = User(name, hair_texture, hair_type, concerns, budget, exclusions)
     recommended = recommend_products(user, products)
 
@@ -83,6 +92,7 @@ def run_mane_box():
         print("\n😔 Sorry, no matching products found within your preferences and budget.")
         return
 
+    # Build the box
     box = SubscriptionBox(user)
     shampoos = [p for p in recommended if "shampoo" in p.category.lower()]
     conditioners = [p for p in recommended if "conditioner" in p.category.lower()]

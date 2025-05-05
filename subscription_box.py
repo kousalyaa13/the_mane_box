@@ -15,17 +15,17 @@ class SubscriptionBox:
         conditioners = [p for p in self.selected_products if "conditioner" in p.category.lower()]
         others = [p for p in self.selected_products if p not in shampoos + conditioners]
 
-        def print_section(title, products):
+        def print_section(title, products, tier_name):
             if products:
-                print(f"\n{title}")
+                print(f"\n{title} ({tier_name} picks)")
                 for p in products:
                     concerns = identify_concerns(p.description)
-                    concern_text = f"  ➤ Targets: {', '.join(concerns)}" if concerns else "  ➤ Targets: General care"
-                    print(f"- {p.name} by {p.brand} — ${p.price:.2f}")
+                    concern_text = f"       ➤ Targets: {', '.join(concerns)}" if concerns else "       ➤ Targets: General care"
+                    print(f"- {p.brand} – {p.name}")
                     print(concern_text)
 
-        print_section("🧴 Shampoos:", shampoos)
-        print_section("💧 Conditioners:", conditioners)
-        print_section("✨ Other Products:", others)
+        print_section("🧴 Shampoos", shampoos)
+        print_section("💧 Conditioners", conditioners)
+        print_section("✨ Other Products", others)
 
         print("\n🧼 Enjoy your personalized hair care box!")
