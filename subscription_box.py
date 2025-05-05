@@ -20,15 +20,23 @@ class SubscriptionBox:
             if all(x not in p.category.lower() for x in ["shampoo", "conditioner"]) or
                any(keyword in p.category.lower() for keyword in ["mask", "treatment", "leave-in", "serum", "spray", "oil", "combo", "2-in-1"])
         ]
+        print("\n[DEBUG] Products considered for 'others':")
+        for p in self.selected_products:
+            if not any(keyword in p.category.lower() for keyword in ["shampoo", "conditioner"]) and any(
+                keyword in p.category.lower() for keyword in ["mask", "treatment", "leave-in", "serum", "spray", "oil", "combo", "2-in-1"]
+            ):
+                print(f"- {p.category} | {p.brand} – {p.name}")
 
         def print_section(title, products, tier_name):
-            if products:
                 print(f"\n{title} ({tier_name})")
-                for p in products:
-                    concerns = identify_concerns(p.description)
-                    concern_text = f"  ➤ Targets: {', '.join(concerns)}" if concerns else "  ➤ Targets: General care"
-                    print(f"- {p.brand} – {p.name}")
-                    print(concern_text)
+                if products:
+                    for p in products:
+                        concerns = identify_concerns(p.description)
+                        concern_text = f"  ➤ Targets: {', '.join(concerns)}" if concerns else "  ➤ Targets: General care"
+                        print(f"- {p.brand} – {p.name}")
+                        print(concern_text)
+                else:
+                    print("⚠️ No matching products found in this category.")
 
         print_section("🧴 Shampoos", shampoos, "within your budget")
         print_section("💧 Conditioners", conditioners, "within your budget")

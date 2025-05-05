@@ -12,7 +12,7 @@ def clean_html(text):
 
 df["description"] = df["description"].apply(clean_html)
 
-# Optionally rename columns for your app
+# Renamed columns for clarity
 df = df.rename(columns={
     "title": "name",
     "categories/1": "category",
@@ -25,4 +25,4 @@ final_df = df[["name", "category", "brand", "description"]]
 # Save to a cleaned CSV
 final_df.to_csv("cleaned_mane_box_data.csv", index=False)
 
-print("✅ Descriptions cleaned and saved to cleaned_mane_box_data.csv")
+print("Descriptions cleaned and saved to cleaned_mane_box_data.csv")
