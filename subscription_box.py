@@ -22,9 +22,9 @@ class SubscriptionBox:
                     concerns = identify_concerns(p.description)
                     print(f"- {p.name} ({p.brand})")
                     if concerns:
-                        print(f"  ➤ Targets: {', '.join(concerns)}")
+                        print(f"        ➤ Targets: {', '.join(concerns)}")
                     else:
-                        print("  ➤ Targets: General hair care")
+                        print(f"         ➤ Targets: General hair care")
 
         print_section("🧴 Shampoos:", shampoos)
         print_section("💧 Conditioners:", conditioners)

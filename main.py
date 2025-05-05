@@ -61,20 +61,11 @@ def run_mane_box():
         # Get hair concerns (optional free text)
         concerns = [c.strip() for c in input("Hair concerns (comma-separated): ").lower().split(',')]
 
-        # Validate budget
-        while True:
-            budget_input = input("Max budget for individual products: $").strip()
-            try:
-                budget = float(budget_input)
-                break
-            except ValueError:
-                print("❌ Invalid budget input. Please enter a number like 20 or 15.50.")
-
         # Get exclusions (free text)
         exclusions = [e.strip() for e in input("Any exclusions (e.g., sulfate-free, vegan)? (comma-separated): ").lower().split(',')]
 
         # Build user and recommend
-        user = User(name, hair_texture, hair_type, concerns, budget, exclusions)
+        user = User(name, hair_texture, hair_type, concerns, exclusions)
         recommended = recommend_products(user, products)
 
         if not recommended:
