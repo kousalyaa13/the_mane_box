@@ -1,4 +1,4 @@
-from utils import identify_concerns  # if using separate file
+from utils import identify_concerns
 
 class SubscriptionBox:
     def __init__(self, user):
@@ -20,15 +20,12 @@ class SubscriptionBox:
                 print(f"\n{title}")
                 for p in products:
                     concerns = identify_concerns(p.description)
-                    print(f"- {p.name} ({p.brand})")
-                    if concerns:
-                        print(f"        ➤ Targets: {', '.join(concerns)}")
-                    else:
-                        print(f"         ➤ Targets: General hair care")
+                    concern_text = f"  ➤ Targets: {', '.join(concerns)}" if concerns else "  ➤ Targets: General care"
+                    print(f"- {p.name} by {p.brand} — ${p.price:.2f}")
+                    print(concern_text)
 
         print_section("🧴 Shampoos:", shampoos)
         print_section("💧 Conditioners:", conditioners)
         print_section("✨ Other Products:", others)
 
-        print("\n🧼 Enjoy your hair care picks!")
-        print("💖 Thank you for using The Mane Box!")
+        print("\n🧼 Enjoy your personalized hair care box!")
