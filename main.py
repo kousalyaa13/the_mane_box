@@ -19,11 +19,13 @@ def load_products(filepath):
     with open(filepath, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
+            price = float(row.get("price", 0))
             products.append(Product(
                 name=row["name"],
                 category=row["category"].lower(),
                 brand=row["brand"],
                 description=row["description"],
+                price=price,
                 price_tier=row.get("price_tier", "mid-range")
             ))
     return products
@@ -46,7 +48,8 @@ def recommend_products(user, all_products, avoid_concerns):
         if match_concerns(product.description, user.concerns):
             if not match_concerns(product.description, avoid_concerns):
                 if not match_exclusions(product.description, user.exclusions):
-                    matches.append(product)
+                    if product.price <= user.budget:
+                        matches.append(product)
     # Shuffle the matches to randomize the order
     random.shuffle(matches)
     return matches
