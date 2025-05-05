@@ -115,7 +115,7 @@ def run_mane_box():
         avoid_concerns.append("vegan")
 
     # Additional custom concerns
-    extra = input("Any other hair concerns you'd like to address? (dryness, frizz, oiliness, etc — comma-separated or 'N/A'): ").strip()
+    extra = input("Any other hair concerns you'd like to address? (dryness, frizz, oiliness, etc — comma-separated or 'no'): ").strip()
     if extra.lower() not in ["n/a", "none", "no"]:
         concerns += [c.strip().lower() for c in extra.split(",") if c.strip()]
 
@@ -128,7 +128,7 @@ def run_mane_box():
             print("❌ Please enter a valid number (ex: 25, 45.50)")
 
     # Exclusions
-    raw_exclusions = input("Any product exclusions (sulfates, parabens, fragrances, etc — comma-separated or 'N/A'): ").strip().lower()
+    raw_exclusions = input("Any product exclusions (sulfates, parabens, fragrances, etc — comma-separated or 'no'): ").strip().lower()
     exclusions = [] if raw_exclusions in ["no", "n/a", "none", ""] else [e.strip() for e in raw_exclusions.split(',') if e.strip()]
 
     # Create user profile and get recommendations
