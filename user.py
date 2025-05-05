@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, name, hair_texture, hair_type concerns, budget, exclusions):
+    def __init__(self, name, hair_texture, hair_type, concerns, budget, exclusions):
         """
         Initialize a User object with the following attributes:
         """

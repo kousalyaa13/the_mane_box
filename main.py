@@ -6,7 +6,7 @@ from product import Product
 from subscription_box import SubscriptionBox
 from utils import match_concerns, match_exclusions
 
-def load_products(filepath="data/products.csv"):
+def load_products(filepath="data\cleaned_mane_box_data.csv"):
     if not os.path.exists(filepath):
         print(f"Error: Product file not found at {filepath}")
         return []
@@ -15,19 +15,11 @@ def load_products(filepath="data/products.csv"):
     with open(filepath, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            if not row["price"] or not row["name"]:  # skip incomplete rows
-                continue
-            try:
-                price = float(row["price"])
-            except ValueError:
-                print(f"Skipping product with invalid price: {row}")
-                continue
 
             products.append(Product(
                 row["name"],
                 row["category"],
                 row["brand"],
-                price,
                 row["description"]
             ))
     return products
@@ -36,8 +28,7 @@ def recommend_products(user, all_products):
     matches = []
     for product in all_products:
         if match_concerns(product.description, user.concerns) and not match_exclusions(product.description, user.exclusions):
-            if product.price <= user.budget:
-                matches.append(product)
+            matches.append(product)
     return matches
 
 def run_mane_box():
