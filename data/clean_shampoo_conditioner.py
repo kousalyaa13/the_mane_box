@@ -1,39 +1,28 @@
 import pandas as pd
 import re
 
-# Load dataset using raw string or forward slashes to avoid escape errors
-df = pd.read_csv(r"data\imported datasets\dataset_sephora_shampoo+conditioner.csv", encoding="utf-8")
+# Load the dataset
+df = pd.read_csv("data/unformatted/sephora_shampoo+conditioner.csv", encoding="utf-8")
 
-# Show column names if unsure
-print("Columns in CSV:", df.columns)
-
-# Function to clean HTML and unwanted suffixes
-def clean_text(text):
-    if pd.isnull(text):
-        return ""
-    text = re.sub(r"<.*?>", "", str(text))  # remove HTML
-    text = re.sub(r"\s+", " ", text).strip()
-    text = re.sub(
-        r"in\s?\d+(\.\d+)?\s?(oz|ml|g)?(\s?\/\s?\d+\s?(ml|oz|g))?\s?(Image\s?\d+)?",
-        "", text, flags=re.IGNORECASE
+# Function to clean HTML and unwanted text
+def clean_text(raw_text):
+    clean = re.sub(r'<[^>]+>', '', str(raw_text))  # Remove HTML tags
+    clean = re.sub(r'\s+', ' ', clean).strip()     # Normalize whitespace
+    clean = re.sub(
+        r"in\s?\d+(\.\d+)?\s?(oz|ml|mL|g|oz\/ml)?(\s?\/\s?\d+\s?(mL|ml))?\s?(Image\s?\d+)?",
+        "", clean, flags=re.IGNORECASE
     )
-    text = re.sub(r"Image\s*\d+", "", text, flags=re.IGNORECASE)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    clean = re.sub(r'Image\s*\d+', '', clean, flags=re.IGNORECASE)  # Stray Image mentions
+    clean = re.sub(r'\s+', ' ', clean).strip()  # Final whitespace clean
+    return clean
 
-# Adjust these to match your CSV
+# Clean relevant fields
 df["description"] = df["description"].apply(clean_text)
-df["name"] = df["name"].apply(clean_text)  # only if 'name' is correct
+df["name"] = df["name"].apply(clean_text)
 
-# Rename columns if needed
-df = df.rename(columns={
-    "categories/1": "category",
-    "brand": "brand"
-})
+# Format price from cents to dollars
+df["price"] = df["price"].apply(lambda x: round(float(x) / 100, 2) if pd.notnull(x) else x)
 
-# Keep only necessary columns (adjust if needed)
-final_df = df[["name", "category", "brand", "description"]]
-
-# Save to new CSV
-final_df.to_csv("data/cleaned_mane_box_data.csv", index=False)
-print("Cleaned CSV saved as 'data/cleaned_mane_box_data.csv'")
+# Save cleaned file
+df.to_csv("data/cleaned/cleaned_shampoo+conditioner.csv", index=False)
+print("✅ Cleaned CSV saved")
