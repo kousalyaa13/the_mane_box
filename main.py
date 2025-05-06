@@ -3,7 +3,7 @@ import random
 from user import User
 from product import Product
 from subscription_box import SubscriptionBox
-from utils import match_concerns, match_exclusions
+from utils import match_concerns, match_exclusions, concern_keywords
 
 def load_products(filepath):
     """
@@ -21,12 +21,11 @@ def load_products(filepath):
         for row in reader:
             price = float(row.get("price", 0))
             products.append(Product(
-                name=row["name"],
+                name=row.get("name", row.get("title", "")),
                 category=row["category"].lower(),
                 brand=row["brand"],
                 description=row["description"],
                 price=price,
-                price_tier=row.get("price_tier", "mid-range")
             ))
     return products
 
@@ -58,12 +57,12 @@ def run_mane_box():
     """
     Main function to run the Mane Box recommendation system.
     Gathers user input, filters products, and prints results.
-    """
+    """    
     print("\n\n--- Welcome to The Mane Box ---")
 
     # Load data
-    main_products = load_products("data/cleaned_mane_box_data_with_price_tiers.csv")
-    treatment_products = load_products("data/cleaned_treatments_data.csv")
+    main_products = load_products("data/cleaned/cleaned_shampoo+conditioner.csv")
+    treatment_products = load_products("data/cleaned/cleaned_treatments.csv")
     all_products = main_products + treatment_products
 
     name = input("Enter your name: ").strip()
@@ -90,6 +89,7 @@ def run_mane_box():
 
     concerns = []
     avoid_concerns = []
+    available_concerns = sorted(concern_keywords.keys())
 
     # Granular preference filters
     if get_yes_no("Do you have color-treated hair? (yes/no): "):
@@ -97,30 +97,18 @@ def run_mane_box():
     else:
         avoid_concerns.append("color-treated")
 
-    if get_yes_no("Do you have dandruff or scalp issues? (yes/no): "):
-        concerns.extend(["dandruff", "buildup"])
-    else:
-        avoid_concerns.extend(["dandruff", "buildup"])
-
-    if get_yes_no("Do you use heat styling tools regularly? (yes/no): "):
-        concerns.append("heat damage")
-    else:
-        avoid_concerns.append("heat damage")
-
-    if get_yes_no("Would you want more volume in your hair? (yes/no): "):
-        concerns.append("volume")
-    else:
-        avoid_concerns.append("volume")
-
-    if get_yes_no("Do you prefer clean/vegan products? (yes/no): "):
+    if get_yes_no("Do you prefer clean/vegan/cruelty-free products? (yes/no): "):
         concerns.append("vegan")
     else:
         avoid_concerns.append("vegan")
 
     # Additional custom concerns
-    extra = input("Any other hair concerns you'd like to address? (dryness, frizz, oiliness, etc — comma-separated or 'no'): ").strip()
+    print("\nHere are some additional hair concerns you can select from:")
+    print(", ".join(available_concerns))
+    extra = input("Enter any that apply (comma-separated), or type 'no' if none: ").strip()
     if extra.lower() not in ["n/a", "none", "no"]:
-        concerns += [c.strip().lower() for c in extra.split(",") if c.strip()]
+        selected_extras = [c.strip().lower() for c in extra.split(",") if c.strip()]
+        concerns += [c for c in selected_extras if c in available_concerns]
 
     # Budget
     while True:

@@ -53,7 +53,7 @@ class SubscriptionBox:
             for p in products:
                 concerns = identify_concerns(p.description)
                 concern_text = f"       ➤ Targets: {', '.join(concerns)}" if concerns else "       ➤ Targets: General care"
-                print(f"- {p.brand} – {p.name}")
+                print(f"- {p.brand} – {p.name} (${p.price:.2f})")
                 print(concern_text)
 
         # Display each category section
