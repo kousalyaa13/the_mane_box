@@ -38,7 +38,7 @@
 # 🧠 Behind the Scenes
 - Natural language processing (NLP) using regex and keyword detection to identify product benefits and exclusions.
 - Data cleaning through Pandas organization to strip HTML tags from scraped data.
-- Price tiers (budget, mid-range, premium) used for filtering without displaying actual prices.
+- Filtering products through user defined budget and displaying actual prices for user reference.
 - Randomized selection ensures variety in recommendations.
 
 ---
