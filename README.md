@@ -46,3 +46,8 @@
 - Add a web-based interface (React, Flask)
 - Expand to seasonal boxes or long-term hair goals
 - Save user history for tailored future suggestions
+
+---
+## 🧑‍💻 App Demo
+<iframe src="https://drive.google.com/file/d/1r6oGMm3TF8lbanOddrbMjWZeD67Ypisu/preview" 
+width="640" height="480" allow="autoplay"></iframe>
