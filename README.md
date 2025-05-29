@@ -48,6 +48,5 @@
 - Save user history for tailored future suggestions
 
 ---
-## 🧑‍💻 App Demo
-<iframe src="https://drive.google.com/file/d/1r6oGMm3TF8lbanOddrbMjWZeD67Ypisu/preview" 
-width="640" height="480" allow="autoplay"></iframe>
+# 🧑‍💻 [App Demo](https://drive.google.com/file/d/1r6oGMm3TF8lbanOddrbMjWZeD67Ypisu/view?usp=sharing)
+[![Watch Demo](demo_pic.jpg)](https://drive.google.com/file/d/1r6oGMm3TF8lbanOddrbMjWZeD67Ypisu/view?usp=sharing)
